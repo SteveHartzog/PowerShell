@@ -1,4 +1,9 @@
 {
+  "editor.tabSize": 2,
+  "editor.formatOnType": false,
+  "editor.formatOnSave": true,
+  "editor.wordWrap": true,
+  "files.trimTrailingWhitespace": true,
   "files.exclude": {
     "Modules": true,
     "Scripts": true,

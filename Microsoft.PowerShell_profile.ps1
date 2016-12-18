@@ -1,6 +1,18 @@
 ﻿# Defaul Shell Colors
 $Host.UI.RawUI.ForegroundColor = "Gray"
 
+### Posh-Git ####################################################################
+Push-Location (Split-Path -Path $MyInvocation.MyCommand.Definition -Parent)
+
+# Load posh-git module from current directory
+Import-Module "/Program Files/WindowsPowerShell/Modules/posh-git"
+
+# If module is installed in a default location ($env:PSModulePath),
+# use this instead (see about_Modules for more information):
+# Import-Module posh-git
+
+
+
 # Load all scripts in autoload directory
 $psdir= $env:USERPROFILE + "\Documents\WindowsPowershell\autoload"  
 Get-ChildItem "${psdir}\*.ps1" | %{.$_} 
@@ -11,7 +23,7 @@ function get-FileTimeStamps {
     [Parameter(mandatory=$true)]
     [system.io.fileinfo]$file)
 
-    $file = resolve-path $file     
+    $file = resolve-path $file
     "$(($file).CreationTime)"
     "$(($file).LastAccessTime)"
     "$(($file).LastWriteTime)"
@@ -43,13 +55,11 @@ $colors.ErrorBackgroundColor = "black"
 function getPath {
   if ((Convert-Path .) -eq $env:USERPROFILE) {
     Write-Host ("~") -NoNewline -ForegroundColor "Cyan" # ⛾
-    Write-Host (" ($((Get-ChildItem).count))") -NoNewline -ForegroundColor "DarkGray"
   } else {
     [System.Collections.ArrayList]$pathArray = (Convert-Path .).split('\')
     $pathArray.RemoveAt(0)
     $path = $pathArray -join '/'
     Write-Host ("$path") -NoNewline -ForegroundColor "white"
-    Write-Host (" ($((Get-ChildItem).count))") -NoNewline -ForegroundColor "DarkGray"
   }
 }
 
@@ -65,31 +75,35 @@ function prompt {
 
   if ($isAdmin) {
     $host.ui.rawui.WindowTitle = 'Administrator'
-    $promptStyle = '#'    
+    $promptStyle = '#'
   } else {
     $host.ui.rawui.WindowTitle = $CurrentUser
     $promptStyle = '$'
   }
 
   # History
-  $history = @(get-history)  
-  if($history.Count -gt 0) {  
-    $lastItem = $history[$history.Count - 1]  
-    $lastId = $lastItem.Id  
+  $history = @(get-history)
+  if($history.Count -gt 0) {
+    $lastItem = $history[$history.Count - 1]
+    $lastId = $lastItem.Id
   }
+  # $gitStatus = (Write-VcsStatus -NoNewLine)
   $nextCommand = '[' + ($lastId + 1) + ']'
 
   # Write-Host ("──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────") -NoNewline -ForegroundColor "DarkGray"
   Write-Host ("`n$hostAndUser") -NoNewline -ForegroundColor "green"
   Write-Host (":/") -NoNewline -ForegroundColor "White"
   Write-Host ("$(getPath)") -NoNewline
+  Write-VcsStatus -NoNewline
+  Write-Host (" ($((Get-ChildItem).count))") -NoNewline -ForegroundColor "DarkGray"
+  # Write-Host ("$($gitStatus) ") -NoNewline
   Write-Host ("`n$nextCommand ") -NoNewline
 
   # Show PromptStyle without tacking that stupid "PS" on the end
   "$promptStyle "
 }
 
-Set-Location C:\users\shart
+# Set-Location C:\users\shart
 
 Clear-Host
 

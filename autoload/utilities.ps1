@@ -11,6 +11,11 @@ if (!(Test-Path Alias:out-voice)) {
   new-alias -name out-voice -value invoke-speech
 }
 
+# alias which
+if (!(Test-Path Alias:which)) {
+  new-alias -name which -value get-command
+}
+
 function reload-profile {
   @(
     $Profile.AllUsersAllHosts,
