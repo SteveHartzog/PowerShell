@@ -1,0 +1,11 @@
+{
+  "files.exclude": {
+    "Modules": true,
+    "Scripts": true,
+    ".gitignore": true,
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/.DS_Store": true
+  }
+}

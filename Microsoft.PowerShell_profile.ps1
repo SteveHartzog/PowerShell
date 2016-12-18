@@ -2,7 +2,7 @@
 $Host.UI.RawUI.ForegroundColor = "Gray"
 
 # Load all scripts in autoload directory
-$psdir= $env:USERPROFILE + "\Documents\WindowsPowershell\Scripts\autoload"  
+$psdir= $env:USERPROFILE + "\Documents\WindowsPowershell\autoload"  
 Get-ChildItem "${psdir}\*.ps1" | %{.$_} 
 
 # Not Tested
