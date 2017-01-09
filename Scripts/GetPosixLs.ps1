@@ -62,15 +62,15 @@ function Get-Posix-ls {
     if ($fileType -eq "directory") {
       Write-Host (" d{0,$("-" + $($permissionsWidth-1))}  " -f $unixPermissions) -NoNewline
     } else {
-      Write-Host (" -{0,$("-" + $($permissionsWidth-1))}  " -f $unixPermissions) -NoNewline      
+      Write-Host (" -{0,$("-" + $($permissionsWidth-1))}  " -f $unixPermissions) -NoNewline
     }
 
     # Size
-    Write-Host ("{0,$($fileSizeWidth)}  " -f $fileSize) -NoNewline -ForegroundColor $fileSizeForeColor -BackgroundColor $fileSizeBackColor 
+    Write-Host ("{0,$($fileSizeWidth)}  " -f $fileSize) -NoNewline -ForegroundColor $fileSizeForeColor -BackgroundColor $fileSizeBackColor
 
     # Last Saved
     Write-Host ("{0,$("-" + $lastWriteTimeWidth)} " -f $file.LastWriteTime) -NoNewline
-    
+
     # File Name
     $fileName = (truncate-string -string $file.Name -width $fileNameWidth)
     switch ($fileType) {
@@ -99,7 +99,7 @@ function Get-Posix-ls {
 
     # # Reset Colors
     # $Host.UI.RawUI.ForegroundColor = $fore
-    
+
   }
 }
 if (Test-Path Alias:ls) { Remove-Item Alias:ls }
@@ -124,7 +124,7 @@ function old-ls {
       Get-ChildItem -Directory -Name
   } else {
     Get-ChildItem
-  }  
+  }
   if ($color) {
     Write-Host ("Color!")
   }
@@ -139,7 +139,7 @@ function get-unix-permissions {
     $ownerName = $acl.Owner.Split('\')[1]
     $ownerName = truncate-string -string $ownerName -width 14 -ellipses $false
     $ownerName = "{0,-14}" -f $ownerName
-    
+
     # Group
     $groupFileSystemRights = (($acl.Access | Where-Object {$_.IdentityReference -eq $acl.Group})).FileSystemRights
     $groupName = $acl.Group.Split('\')[1]
@@ -155,10 +155,10 @@ function get-unix-permissions {
     if ($groupFileSystemRights -match "FullControl") {
       $output += "rwx"
     }
-    
+
     # Other?
     $output += "---"
-    
+
     $output += " " + $ownerName
     $output += " " + $groupName
 
@@ -206,4 +206,4 @@ function get-filetype {
   }
 }
 
-Write-Host "get-posix-ls loaded."
+Set-Debug " >> Finished GetPosixLs."

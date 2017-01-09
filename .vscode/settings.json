@@ -5,8 +5,8 @@
   "editor.wordWrap": true,
   "files.trimTrailingWhitespace": true,
   "files.exclude": {
+    "Scripts/InstalledScriptInfos*": true,
     "Modules": true,
-    "Scripts": true,
     ".gitignore": true,
     "**/.git": true,
     "**/.svn": true,

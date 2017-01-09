@@ -4,7 +4,7 @@ $voice.Rate = -3
 function invoke-speech {
   param([Parameter(ValueFromPipeline=$true)][string] $say )
   process {
-    $voice.Speak($say) | out-null;    
+    $voice.Speak($say) | out-null;
   }
 }
 if (!(Test-Path Alias:out-voice)) {
@@ -27,8 +27,26 @@ function reload-profile {
       Write-Verbose "Running $_"
       . $_
     }
-  }    
+  }
 }
+
+function Import-Scripts {
+  Param(
+    [string]$directory = $(Throw "Please provide a directory to look for modules.")
+  )
+
+  $scriptList = Get-ChildItem "${directory}\*.ps1" | Select-Object -Expand Name
+  Set-Debug "Import-Scripts Dir: $($directory)"
+  Set-Debug "Import-Scripts List: $($scriptList)"
+
+  foreach ($script in $scriptList) {
+    Set-Debug "'$($directory)\$($script)': Started loading."
+    Import-Module "$($directory)\$($script)" -Force
+  }
+}
+
+
+
 
 function truncate-string {
   Param(
@@ -67,8 +85,8 @@ function get-coffee2 { # ☕
 }
 
 
-function get-folder { # 
+function get-folder { #
   "$([char]0xF4C2)" # 1F4C1 (closed) or 1F4C2 (open)
 }
 
-Write-Host "Utilities loaded."
+Set-Debug " >> Finished utilities.ps1"
